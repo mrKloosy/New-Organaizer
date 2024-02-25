@@ -202,7 +202,7 @@ public:
     void EditNote()
     {
         system("cls");
-
+        bool tH = false, tM = false;
         if (notes.empty())
         {
             cout << "Нет доступных заметок для редактирования.\n";
@@ -221,22 +221,32 @@ public:
         if (noteNumber >= 1 and noteNumber <= notes.size())
         {
             Note& note = notes[noteNumber - 1];
-            cout << "Введите новое время (часы): ";
-            cin >> note.timeH;
-            cout << "Введите новое время (минуты): ";
-            cin >> note.timeM;
-
-            if (note.GetTimeH() < 0 or note.GetTimeH() > 23)
+            cout << "Введите новое время в часах: ";
+            do
             {
-                cout << "Ошибка, введите время в часах снова: ";
                 cin >> note.timeH;
-            }
-
-            if (note.GetTimeM() < 0 or note.GetTimeM() > 59)
+                if (note.GetTimeH() < 0 or note.GetTimeH() > 23)
+                {
+                    cout << "Ошибка, введите время в часах снова: ";
+                }
+                else
+                {
+                    tH = true;
+                }
+            } while (!tH);
+            cout << "Введите новое время в минутах: ";
+            do
             {
-                cout << "Ошибка, введите время в минутах снова: ";
                 cin >> note.timeM;
-            }
+                if (note.GetTimeM() < 0 or note.GetTimeM() > 59)
+                {
+                    cout << "Ошибка, введите время в минутах снова: ";
+                }
+                else
+                {
+                    tM = true;
+                }
+            } while (!tM);
             cin.ignore(INT_MAX, '\n');
             cout << "Введите новое описание: ";
             getline(cin, note.description);
@@ -296,9 +306,10 @@ public:
         Note note;
         bool tH = false, tM = false;
         cout << "Введите время в часах: ";
-        do {
+        do 
+        {
             cin >> note.timeH;
-            if (note.GetTimeH() < 0 and note.GetTimeH() > 23)
+            if (note.GetTimeH() < 0 or note.GetTimeH() > 23)
             {
                 cout << "Ошибка, введите время в часах снова: ";
             }
@@ -306,12 +317,12 @@ public:
             {
                 tH = true;
             }
-
         } while (!tH);
         cout << "Введите время в минутах: ";
-        do {
+        do 
+        {
             cin >> note.timeM;
-            if (note.GetTimeM() < 0 and note.GetTimeM() > 59)
+            if (note.GetTimeM() < 0 or note.GetTimeM() > 59)
             {
                 cout << "Ошибка, введите время в минутах снова: ";
             }
@@ -487,6 +498,4 @@ int main()
     setlocale(LC_ALL, "RUS");
     int value = 1;
     Note t(value);
-
-    return 0;
 }
